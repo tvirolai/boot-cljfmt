@@ -26,8 +26,8 @@
 
 (deftask fmt
   "Run a check for files, folders or the whole project, print the results."
-  [f file FILE str "The file or folder to check"]
-  (fmt/check file))
+  [f folder FOLDER str "The file or folder to check"]
+  (fmt/check folder))
 
 (deftask fix
   ;; TODO
