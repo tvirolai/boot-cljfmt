@@ -24,6 +24,11 @@ Fixing files with the `fix` task works the same way:
 boot fix -f .
 ```
 
+You can run the tests the usual way:
+```clojure
+boot test
+```
+
 ## License
 
 Copyright © 2018 Siili Solutions

@@ -1,0 +1,4 @@
+(ns incorrectly.formatted.namespace )
+
+( defn we-care [alot]
+ (+ 1 alot))
