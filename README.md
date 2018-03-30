@@ -1,6 +1,7 @@
 # boot-cljfmt
 
 [![License](https://img.shields.io/badge/License-EPL%201.0-red.svg)](https://opensource.org/licenses/EPL-1.0)
+[![CircleCI](https://img.shields.io/circleci/project/github/siilisolutions/boot-cljfmt.svg)](https://circleci.com/gh/siilisolutions/boot-cljfmt)
 
 A port of [lein-cljfmt](https://github.com/weavejester/cljfmt) for Boot.
 That is, a library for checking and fixing the formatting of Clojure files.
