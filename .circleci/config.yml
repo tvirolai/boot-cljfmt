@@ -1,0 +1,12 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/boot-cljfmt
+    docker:
+      - image: circleci/clojure:boot-2.7.2
+    steps:
+      - checkout
+      - run: boot test
+    environment:
+      BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
+      BOOT_WATCHERS_DISABLE: "yes"
