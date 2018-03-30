@@ -11,7 +11,7 @@
 (require '[boot-cljfmt.core :as fmt])
 
 (task-options!
-  pom {:project     project
+ pom {:project     project
       :version     version
       :description "A Boot port of lein-cljfmt"
       :url         "http://github.com/siilisolutions/boot-cljfmt"
@@ -24,13 +24,14 @@
   []
   (comp (pom) (jar) (install)))
 
-(deftask fmt
+(deftask check
   "Run a check for files, folders or the whole project, print the results."
   [f folder FOLDER str "The file or folder to check"]
   (fmt/check folder))
 
 (deftask fix
-  ;; TODO
-  [])
+  "Run a fix for files, folders or the whole project."
+  [f folder FOLDER str "The file or folder to fix"]
+  (fmt/fix folder))
 
 (require '[adzerk.boot-test :refer [test]])

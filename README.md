@@ -7,17 +7,21 @@ That is, a library for checking and fixing the formatting of Clojure files.
 
 ## Usage
 
-`boot-cljfmt` can currently be used for checking the formatting of single files
-or folders. Support for fixing as well as custom indent rules will be added soon.
+`boot-cljfmt` can currently be used for checking and fixing the formatting of single files or folders. Support for custom indent rules will be added soon.  
 
 Check all files in the current project:
 ```clojure
-boot fmt -f .
+boot check -f .
 ```
 
 Checking a single files is done in a similar way:
 ```clojure
-boot fmt -f build.boot
+boot check -f build.boot
+```
+
+Fixing files with the `fix` task works the same way:
+```clojure
+boot fix -f .
 ```
 
 ## License

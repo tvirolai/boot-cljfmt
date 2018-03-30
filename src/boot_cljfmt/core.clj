@@ -45,3 +45,19 @@
                    (println (:report err)))
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
                  (System/exit 1)))))
+
+(defn fix
+  [dir]
+  (let [checks (map check-file (get-project-filenames dir))
+        errored-checks (filter #(true? (:errored? %)) checks)]
+    (try
+      (doseq [file (map :file errored-checks)]
+        (try
+          (let [original (slurp file)
+                revised (cljfmt/reformat-string original)]
+            (when (not= original revised)
+              (println (str "Reformatting " file))
+              (spit file revised)))
+          (catch Exception e
+            (println (str "Failed to format file: " file))
+            (println (.getMessage e))))))))
