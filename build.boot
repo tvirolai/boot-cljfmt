@@ -6,9 +6,11 @@
           :dependencies   '[[org.clojure/clojure "1.9.0"]
                             [cljfmt "0.5.7"]
                             [lein-cljfmt "0.5.7"]
-                            [adzerk/boot-test "RELEASE" :scope "test"]])
+                            [adzerk/boot-test "RELEASE" :scope "test"]
+                            [metosin/bat-test "0.4.0" :scope "test"]])
 
-(require '[boot-cljfmt.core :as fmt])
+(require '[boot-cljfmt.core :as fmt]
+         '[metosin.bat-test :refer (bat-test)])
 
 (task-options!
  pom {:project     project

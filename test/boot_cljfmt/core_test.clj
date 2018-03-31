@@ -24,9 +24,7 @@
   "./resources/mock_namespace.clj")
 
 (defn create-mockfile! []
-  (->> "./resources/mock_namespace.txt"
-       slurp
-       (spit mockfilename)))
+  (->> "./resources/mock_namespace.txt" slurp (spit mockfilename)))
 
 (defn delete-mockfile! []
   (io/delete-file mockfilename))
@@ -39,8 +37,8 @@
       (is (record? res))
       (is (true? (:errored? res)))
       (is (string/includes?
-            (:report res)
-            (str mockfilename " has incorrect formatting")))))
+           (:report res)
+           (str mockfilename " has incorrect formatting")))))
   (testing "Whether no such error are found in correctly formatted files"
     (let [res (check-file "./build.boot")]
       (is (record? res))
@@ -52,4 +50,15 @@
     (is (= "File or directory does not exist or does not contain Clojure files.\n"
            (with-out-str (check "Bama lama")))))
   #_(testing "Whether a correct report is printed if no errors are found"
-    (is (= "All files formatted correctly.\n" (with-out-str (check "."))))))
+      (is (= "All files formatted correctly.\n" (with-out-str (check "."))))))
+
+(deftest test_fix
+  (testing "That no output is printed when there's nothing to fix"
+    (is (= "" (with-out-str (fix ".")))))
+  (testing "That the fix function formats an invalid file correctly"
+    (let [_ (create-mockfile!)]
+      (is (= (str "Reformatting " mockfilename "\n")
+             (with-out-str (fix "."))))))
+  (testing "That the reformatted file differs from the invalid original"
+    (is (not= (slurp mockfilename) (slurp "./resources/mock_namespace.txt"))))
+  (delete-mockfile!))
