@@ -21,5 +21,5 @@ jobs:
   deployment:
     production:
       branch: master
-      commands:
-        - boot build-jar push-release
+      steps:
+        - run: boot build-jar push-release
