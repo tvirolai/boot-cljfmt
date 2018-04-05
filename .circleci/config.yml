@@ -18,24 +18,8 @@ jobs:
     environment:
       BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
       BOOT_WATCHERS_DISABLE: "yes"
-  deploy:
-    filters:
-      branches:
-        only: master # Only deploy from master branch
-    working_directory: ~/boot-cljfmt
-    docker:
-      - image: circleci/clojure:boot-2.7.2
-    steps:
-      - checkout
-      - restore_cache:
-          key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
-      - run: boot test, boot build-jar push-release
-      - save_cache:
-          paths:
-            - ~/.m2
-            - ~/.boot/cache/lib
-            - ~/.boot/cache/bin
-          key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
-    environment:
-      BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
-      BOOT_WATCHERS_DISABLE: "yes"
+  deployment:
+    production:
+      branch: master
+      commands:
+        - boot build-jar push-release
