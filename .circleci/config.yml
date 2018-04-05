@@ -19,7 +19,7 @@ jobs:
             - ~/.boot/cache/lib
             - ~/.boot/cache/bin
           key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
-      - parsist_to_workspace:
+      - persist_to_workspace:
           root: .
           paths: .
     environment:
