@@ -24,5 +24,8 @@ jobs:
     filters:
       branches:
         only: /master/
+    working_directory: ~/boot-cljfmt
+    docker:
+      - image: circleci/clojure:boot-2.7.2
     steps:
       - run: boot build-jar push-release
