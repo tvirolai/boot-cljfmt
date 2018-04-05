@@ -1,9 +1,12 @@
 version: 2
+
+defaults: &defaults
+  docker:
+    - image: circleci/clojure:boot-2.7.2
+  working_directory: ~/boot-cljfmt
+
 jobs:
   build:
-    working_directory: ~/boot-cljfmt
-    docker:
-      - image: circleci/clojure:boot-2.7.2
     steps:
       - checkout
       - restore_cache:
@@ -15,6 +18,9 @@ jobs:
             - ~/.boot/cache/lib
             - ~/.boot/cache/bin
           key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
+      - parsist_to_workspace:
+          root: .
+          paths: .
     environment:
       BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
       BOOT_WATCHERS_DISABLE: "yes"
@@ -24,8 +30,7 @@ jobs:
     filters:
       branches:
         only: /master/
-    working_directory: ~/boot-cljfmt
-    docker:
-      - image: circleci/clojure:boot-2.7.2
     steps:
+      - attach_workspace:
+          at: ~/boot-cljfmt
       - run: boot build-jar push-release
