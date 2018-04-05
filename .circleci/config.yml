@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
+          key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
       - run: boot test
       - save_cache:
           paths:
