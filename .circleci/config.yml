@@ -18,3 +18,21 @@ jobs:
     environment:
       BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
       BOOT_WATCHERS_DISABLE: "yes"
+  deploy:
+    filters:
+      branches:
+        only: master # Only deploy from master branch
+    steps:
+      - checkout
+      - restore_cache:
+          key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
+      - run: boot test, boot build-jar push-release
+      - save_cache:
+          paths:
+            - ~/.m2
+            - ~/.boot/cache/lib
+            - ~/.boot/cache/bin
+          key: boot-cljfmt-{{checksum "boot.properties" }}-{{ checksum "build.boot" }}
+    environment:
+      BOOT_JVM_OPTIONS: "-Xms512m -Xmx1024m"
+      BOOT_WATCHERS_DISABLE: "yes"
