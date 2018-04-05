@@ -1,16 +1,20 @@
 (def project 'boot-cljfmt)
-(def version "0.1.0-SNAPSHOT")
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "1.9.0"]
                             [cljfmt "0.5.7"]
                             [lein-cljfmt "0.5.7"]
+                            [adzerk/bootlaces "0.1.13" :scope "test"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [metosin/bat-test "0.4.0" :scope "test"]])
 
 (require '[boot-cljfmt.core :as fmt]
-         '[metosin.bat-test :refer (bat-test)])
+         '[metosin.bat-test :refer (bat-test)]
+         '[adzerk.bootlaces :refer :all])
+
+(def version "0.1.0-SNAPSHOT")
+(bootlaces! version)
 
 (task-options!
  pom {:project     project
