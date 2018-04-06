@@ -68,7 +68,7 @@
    (collect-clojars-credentials)
    (push
     :file           file
-    :tag            (boolean +last-commit+)
+    :tag            true
     :gpg-sign       false
     :ensure-release true
     :repo           "deploy-clojars")))
