@@ -7,13 +7,10 @@
                             [lein-cljfmt "0.5.7"]
                             [adzerk/bootlaces "0.1.13" :scope "test"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
-                            [metosin/bat-test "0.4.0" :scope "test"]]
-          :repositories  (partial map (fn [[k v]] [k (cond-> v (#{"clojars"} k) (assoc :username (System/getenv "CLOJARS_USER"),
-                                                                                       :password (System/getenv "CLOJARS_PASS")))])))
+                            [metosin/bat-test "0.4.0" :scope "test"]])
 
-(require '[boot-cljfmt.core :as fmt]
-         '[metosin.bat-test :refer (bat-test)]
-         '[adzerk.bootlaces :refer :all]) ; Redefine a variation of this task here
+(require '[metosin.bat-test :refer (bat-test)]
+         '[adzerk.bootlaces :refer :all])
 
 (def version "0.1.0")
 (bootlaces! version)
@@ -32,22 +29,12 @@
   []
   (comp (pom) (jar) (install)))
 
-(deftask check
-  "Run a check for files, folders or the whole project, print the results."
-  [f folder FOLDER str "The file or folder to check"]
-  (fmt/check folder))
-
-(deftask fix
-  "Run a fix for files, folders or the whole project."
-  [f folder FOLDER str "The file or folder to fix"]
-  (fmt/fix folder))
-
 (deftask deploy
-         []
-         (comp (build)
-               (push :repo
-                     "clojars"
-                     :gpg-sign
-                     false)))
+  []
+  (comp (build)
+        (push :repo
+              "clojars"
+              :gpg-sign
+              false)))
 
 (require '[adzerk.boot-test :refer [test]])

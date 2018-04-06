@@ -1,6 +1,8 @@
 (ns boot-cljfmt.core
+  {:boot/export-tasks true}
   (:require [clojure.java.io :as io]
             [cljfmt.core :as cljfmt]
+            [boot.core :as bc]
             [leiningen.cljfmt.diff :as diff]))
 
 (defn clj-file?
@@ -36,7 +38,7 @@
 (defn exit-now! [code]
   (System/exit code))
 
-(defn check
+(defn check-dir
   [dir]
   (let [checks (map check-file (get-project-filenames dir))
         errored-checks (filter #(true? (:errored? %)) checks)]
@@ -49,7 +51,7 @@
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
                  (exit-now! 1)))))
 
-(defn fix
+(defn fix-dir
   [dir]
   (let [checks (map check-file (get-project-filenames dir))
         errored-checks (filter #(true? (:errored? %)) checks)]
@@ -64,3 +66,13 @@
           (catch Exception e
             (println (str "Failed to format file: " file))
             (println (.getMessage e))))))))
+
+(bc/deftask check
+  "Run a check for files, folders or the whole project, print the results."
+  [f folder FOLDER str "The file or folder to check"]
+  (check-dir folder))
+
+(bc/deftask fix
+  "Run a fix for files, folders or the whole project."
+  [f folder FOLDER str "The file or folder to fix"]
+  (fix-dir folder))
