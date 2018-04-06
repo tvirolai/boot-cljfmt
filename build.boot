@@ -11,7 +11,7 @@
 
 (require '[boot-cljfmt.core :as fmt]
          '[metosin.bat-test :refer (bat-test)]
-         '[adzerk.bootlaces :refer :all])
+         '[adzerk.bootlaces :exclude [push-release]]) ; Redefine a variation of this task here
 
 (def version "0.1.0-SNAPSHOT")
 (bootlaces! version)
@@ -41,7 +41,8 @@
   (fmt/fix folder))
 
 (deftask push-release
-  "Deploy release version to Clojars."
+  "Deploy release version to Clojars. Task from Bootlaces with the slight modification
+  that gpg-sign is disabled so that CircleCI can deploy this automatically."
   [f file PATH str "The jar file to deploy."]
   (comp
    (collect-clojars-credentials)
