@@ -31,4 +31,12 @@
   []
   (comp (pom) (jar) (install)))
 
+(deftask deploy
+         []
+         (comp (build)
+               (push :repo
+                     "clojars"
+                     :gpg-sign
+                     false)))
+
 (require '[adzerk.boot-test :refer [test]])
