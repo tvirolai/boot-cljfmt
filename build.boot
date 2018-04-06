@@ -40,4 +40,16 @@
   [f folder FOLDER str "The file or folder to fix"]
   (fmt/fix folder))
 
+(deftask push-release
+  "Deploy release version to Clojars."
+  [f file PATH str "The jar file to deploy."]
+  (comp
+   (collect-clojars-credentials)
+   (push
+    :file           file
+    :tag            (boolean +last-commit+)
+    :gpg-sign       false
+    :ensure-release true
+    :repo           "deploy-clojars")))
+
 (require '[adzerk.boot-test :refer [test]])
