@@ -40,6 +40,9 @@
   [f folder FOLDER str "The file or folder to fix"]
   (fmt/fix folder))
 
+(defn- get-creds []
+  (mapv #(System/getenv %) ["CLOJARS_USER" "CLOJARS_PASS"]))
+
 (deftask ^:private collect-clojars-credentials
   "Collect CLOJARS_USER and CLOJARS_PASS from the user if they're not set."
   []
