@@ -48,25 +48,25 @@
 (deftest test_check
   (testing "Whether it prints a correct report if a non-existing filename is given"
     (is (= "File or directory does not exist or does not contain Clojure files.\n"
-           (with-out-str (check "Bama lama")))))
+           (with-out-str (check-dir "Bama lama")))))
   (testing "Whether a correct report is printed if no errors are found"
-    (is (= "All files formatted correctly.\n" (with-out-str (check ".")))))
+    (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))
   #_(testing "That the function reports errors when an invalid file is added"
       (let [_ (create-mockfile!)]
         (is (true? (string/includes?
-                    (with-out-str (check "."))
+                    (with-out-str (check-dir "."))
                     ("1 file(s) formatted incorrectly"))))))
   #_(testing "That the errors go away when the erroring file is deleted"
       (let [_ (delete-mockfile!)]
-        (is (= "All files formatted correctly.\n" (with-out-str (check ".")))))))
+        (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))))
 
 (deftest test_fix
   (testing "That no output is printed when there's nothing to fix"
-    (is (= "" (with-out-str (fix ".")))))
+    (is (= "" (with-out-str (fix-dir ".")))))
   (testing "That the fix function formats an invalid file correctly"
     (let [_ (create-mockfile!)]
       (is (= (str "Reformatting " mockfilename "\n")
-             (with-out-str (fix "."))))))
+             (with-out-str (fix-dir "."))))))
   (testing "That the reformatted file differs from the invalid original"
     (is (not= (slurp mockfilename) (slurp "./resources/mock_namespace.txt"))))
   (delete-mockfile!))

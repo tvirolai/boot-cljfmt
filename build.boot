@@ -5,12 +5,14 @@
           :dependencies   '[[org.clojure/clojure "1.9.0"]
                             [cljfmt "0.5.7"]
                             [lein-cljfmt "0.5.7"]
+                            [boot/core "RELEASE" :scope "test"]
                             [adzerk/bootlaces "0.1.13" :scope "test"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [metosin/bat-test "0.4.0" :scope "test"]])
 
-(require '[metosin.bat-test :refer (bat-test)]
-         '[adzerk.bootlaces :refer :all])
+(require '[boot-cljfmt.core :refer [check fix]]
+         '[metosin.bat-test :refer (bat-test)]
+         '[adzerk.bootlaces :refer :all]) ; Redefine a variation of this task here
 
 (def version "0.1.1")
 (bootlaces! version)
@@ -28,13 +30,5 @@
   "Build and install the project locally."
   []
   (comp (pom) (jar) (install)))
-
-(deftask deploy
-  []
-  (comp (build)
-        (push :repo
-              "clojars"
-              :gpg-sign
-              false)))
 
 (require '[adzerk.boot-test :refer [test]])

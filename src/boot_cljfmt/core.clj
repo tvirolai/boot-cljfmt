@@ -2,8 +2,8 @@
   {:boot/export-tasks true}
   (:require [clojure.java.io :as io]
             [cljfmt.core :as cljfmt]
-            [boot.core :as bc]
-            [leiningen.cljfmt.diff :as diff]))
+            [leiningen.cljfmt.diff :as diff]
+            [boot.core :as bc]))
 
 (defn clj-file?
   "Implementation from https://gist.github.com/bartojs/83a096ecb1221885ddd1"
@@ -76,3 +76,4 @@
   "Run a fix for files, folders or the whole project."
   [f folder FOLDER str "The file or folder to fix"]
   (fix-dir folder))
+
