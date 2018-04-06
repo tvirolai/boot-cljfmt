@@ -45,16 +45,10 @@ workflows:
           filters:
             tags:
               only: /.*/
-      # - test:
-      #     requires:
-      #       - build
-      #     filters:
-      #       tags:
-      #         only: /.*/
       - deploy:
           requires:
             - build
           filters:
             tags:
-              # only: /^v.*/
-              only: /.*/ # Debug
+              only: /^v.*/
+              # only: /.*/ # Debug
