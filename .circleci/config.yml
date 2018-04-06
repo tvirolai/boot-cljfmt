@@ -35,7 +35,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/boot-cljfmt
-      - run: boot build-jar push-release
+      - run: boot build-jar push-release-without-sign
 
 workflows:
   version: 2
