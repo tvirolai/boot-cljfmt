@@ -33,6 +33,9 @@
         (Checkerror. true file (str file " has incorrect formatting\n" colordiff)))
       (Checkerror. false file ""))))
 
+(defn exit-now! [code]
+  (System/exit code))
+
 (defn check
   [dir]
   (let [checks (map check-file (get-project-filenames dir))
@@ -44,7 +47,7 @@
                  (doseq [err errored-checks]
                    (println (:report err)))
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
-                 (System/exit 1)))))
+                 (exit-now! 1)))))
 
 (defn fix
   [dir]
