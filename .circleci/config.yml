@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: circleci/clojure:boot-2.7.2
+    - image:jcircleci/clojure:boot-2.7.2
   working_directory: ~/boot-cljfmt
 
 jobs:
@@ -27,8 +27,6 @@ jobs:
       BOOT_WATCHERS_DISABLE: "yes"
   deploy:
     <<: *defaults
-    requires:
-      - build
     filters:
       branches:
         only: /master/
@@ -51,4 +49,3 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-              # only: /.*/ # Debug
