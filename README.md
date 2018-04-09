@@ -12,11 +12,15 @@ That is, a library for checking and fixing the formatting of Clojure files.
 
 ## Installation
 
-If you use Boot as your build tool, you can also require boot-cljfmt as a dependency by
-adding the following to your `build.boot`:
+If you use Boot as your build tool, you can add boot-cljfmt as a dependency to your project by adding 
+the following to your `build.boot`:
 
 ```clojure
 (set-env! :dependencies [boot-cljfmt "0.1.1" :scope "test"])
+```
+
+Then you can import the tasks you need:
+```clojure
 (require '[boot-cljfmt.core :refer [check fix]])
 ```
 

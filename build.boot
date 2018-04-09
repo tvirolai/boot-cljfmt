@@ -10,7 +10,7 @@
                             [adzerk/boot-test "RELEASE" :scope "test"]
                             [metosin/bat-test "0.4.0" :scope "test"]]
           :repositories
-          (partial map (fn [[k v]] [k (cond-> v (#{"clojars"} k) (assoc :username (System/getenv "CLOJARS_USER"),
+          (partial map (fn [[k v]] [k (cond-> v (#{"clojars"} k) (assoc :username (System/getenv "CLOJARS_USER")
                                                                         :password (System/getenv "CLOJARS_PASS")))])))
 
 (require '[boot-cljfmt.core :refer [check fix]]
