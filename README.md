@@ -54,7 +54,7 @@ boot -d boot-cljfmt fix -f .
 
 ## License
 
-Copyright © 2018 Siili Solutions
+Copyright © 2018-2019 Siili Solutions
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
