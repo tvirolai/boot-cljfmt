@@ -2,7 +2,7 @@
   {:boot/export-tasks true}
   (:require [clojure.java.io :as io]
             [cljfmt.core :as cljfmt]
-            [leiningen.cljfmt.diff :as diff]
+            [cljfmt.diff :as diff]
             [boot.core :as bc]))
 
 (defn clj-file?

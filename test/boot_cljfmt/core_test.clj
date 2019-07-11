@@ -6,7 +6,7 @@
 
 (deftest test_clj-file?
   (testing "It should return true for all existing files"
-    (is (true? (clj-file? (io/file "./src/boot_cljfmt/core.clj")))))
+    (is (clj-file? (io/file "./src/boot_cljfmt/core.clj"))))
   (testing "Whether the function clj-file? returns false for non-existing files."
     (is (false? (clj-file? (io/file "autoexec.bat")))))
   (testing "Whether an error is thrown for string inputs."
@@ -35,7 +35,7 @@
           res (check-file mockfilename)
           _ (delete-mockfile!)]
       (is (record? res))
-      (is (true? (:errored? res)))
+      (is (:errored? res))
       (is (string/includes?
            (:report res)
            (str mockfilename " has incorrect formatting")))))
