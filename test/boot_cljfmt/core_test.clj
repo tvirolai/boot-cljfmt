@@ -2,9 +2,9 @@
   (:require [clojure.test :refer :all]
             [boot-cljfmt.core :refer :all]
             [clojure.java.io :as io]
-            [clojure.string :as string]))
+            [clojure.string :as s]))
 
-(deftest test_clj-file?
+(deftest clj-file-detection
   (testing "It should return true for all existing files"
     (is (clj-file? (io/file "./src/boot_cljfmt/core.clj"))))
   (testing "Whether the function clj-file? returns false for non-existing files."
@@ -12,7 +12,7 @@
   (testing "Whether an error is thrown for string inputs."
     (is (thrown? Exception (clj-file? "autoexec.bat")))))
 
-(deftest test_get-project-filenames
+(deftest reading-clj-files
   (testing "It should return a vector of valid Clojure filenames"
     (let [res (get-project-filenames ".")]
       (is (vector? res))
@@ -29,14 +29,14 @@
 (defn delete-mockfile! []
   (io/delete-file mockfilename))
 
-(deftest test_check-file
+#_(deftest test_check-file
   (testing "Whether the function reports errors in an incorrectly formatted file "
     (let [_ (create-mockfile!)
           res (check-file mockfilename)
           _ (delete-mockfile!)]
       (is (record? res))
       (is (:errored? res))
-      (is (string/includes?
+      (is (s/includes?
            (:report res)
            (str mockfilename " has incorrect formatting")))))
   (testing "Whether no such error are found in correctly formatted files"
@@ -45,28 +45,17 @@
       (is (false? (:errored? res)))
       (is (= "" (:report res))))))
 
-(deftest test_check
+#_(deftest test_check
   (testing "Whether it prints a correct report if a non-existing filename is given"
     (is (= "File or directory does not exist or does not contain Clojure files.\n"
            (with-out-str (check-dir "Bama lama")))))
   (testing "Whether a correct report is printed if no errors are found"
     (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))
-  #_(testing "That the function reports errors when an invalid file is added"
+  (testing "That the function reports errors when an invalid file is added"
       (let [_ (create-mockfile!)]
-        (is (true? (string/includes?
+        (is (true? (s/includes?
                     (with-out-str (check-dir "."))
                     ("1 file(s) formatted incorrectly"))))))
-  #_(testing "That the errors go away when the erroring file is deleted"
+  (testing "That the errors go away when the erroring file is deleted"
       (let [_ (delete-mockfile!)]
         (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))))
-
-(deftest test_fix
-  (testing "That no output is printed when there's nothing to fix"
-    (is (= "" (with-out-str (fix-dir ".")))))
-  (testing "That the fix function formats an invalid file correctly"
-    (let [_ (create-mockfile!)]
-      (is (= (str "Reformatting " mockfilename "\n")
-             (with-out-str (fix-dir "."))))))
-  (testing "That the reformatted file differs from the invalid original"
-    (is (not= (slurp mockfilename) (slurp "./resources/mock_namespace.txt"))))
-  (delete-mockfile!))

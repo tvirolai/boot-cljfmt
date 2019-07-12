@@ -4,6 +4,7 @@
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "1.10.0"]
                             [cljfmt "0.6.4"]
+                            [prismatic/schema "1.1.11"]
                             [boot/core "RELEASE" :scope "test"]
                             [adzerk/bootlaces "0.1.13" :scope "test"]
                             [adzerk/boot-test "RELEASE" :scope "test"]
