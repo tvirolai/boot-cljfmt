@@ -2,7 +2,29 @@
   (:require [clojure.test :refer :all]
             [boot-cljfmt.core :refer :all]
             [clojure.java.io :as io]
-            [clojure.string :as s]))
+            [clojure.string :as string]))
+
+(def test-file-name
+  "./mock_namespace.clj")
+
+(def test-namespace
+  (string/join "\n" ["(ns incorrectly.formatted.namespace )" "( defn we-care [alot]" "(+ 1 alot))"]))
+
+(defn create-test-file! [filename]
+  (spit test-file-name test-namespace))
+
+(defn delete-test-file! [filename]
+  (when (.exists (io/file test-file-name))
+    (io/delete-file test-file-name)))
+
+(defn with-test-file [f]
+  (create-test-file! test-file-name)
+  (f)
+  (delete-test-file! test-file-name))
+
+(delete-test-file! test-file-name)
+
+(use-fixtures :each with-test-file)
 
 (deftest clj-file-detection
   (testing "It should return true for all existing files"
@@ -20,42 +42,27 @@
   (testing "Whether an empty vector is returned for invalid inputs"
     (is (empty? (get-project-filenames "lentävä kalakukko")))))
 
-(def mockfilename
-  "./resources/mock_namespace.clj")
-
-(defn create-mockfile! []
-  (->> "./resources/mock_namespace.txt" slurp (spit mockfilename)))
-
-(defn delete-mockfile! []
-  (io/delete-file mockfilename))
-
-#_(deftest test_check-file
+(deftest checking-files
   (testing "Whether the function reports errors in an incorrectly formatted file "
-    (let [_ (create-mockfile!)
-          res (check-file mockfilename)
-          _ (delete-mockfile!)]
+    (let [res (check-file test-file-name)]
       (is (record? res))
       (is (:errored? res))
-      (is (s/includes?
-           (:report res)
-           (str mockfilename " has incorrect formatting")))))
+      (is (string/includes? (:report res) (str test-file-name " has incorrect formatting")))))
   (testing "Whether no such error are found in correctly formatted files"
     (let [res (check-file "./build.boot")]
       (is (record? res))
       (is (false? (:errored? res)))
       (is (= "" (:report res))))))
 
-#_(deftest test_check
+(deftest project-level-checking
   (testing "Whether it prints a correct report if a non-existing filename is given"
     (is (= "File or directory does not exist or does not contain Clojure files.\n"
-           (with-out-str (check-dir "Bama lama")))))
-  (testing "Whether a correct report is printed if no errors are found"
-    (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))
+           (with-out-str (check-dir! "Bama lama")))))
   (testing "That the function reports errors when an invalid file is added"
-      (let [_ (create-mockfile!)]
-        (is (true? (s/includes?
-                    (with-out-str (check-dir "."))
-                    ("1 file(s) formatted incorrectly"))))))
+    (is (true? (string/includes?
+                (with-out-str (check-dir! "."))
+                "1 file(s) formatted incorrectly"))))
   (testing "That the errors go away when the erroring file is deleted"
-      (let [_ (delete-mockfile!)]
-        (is (= "All files formatted correctly.\n" (with-out-str (check-dir ".")))))))
+    (do
+      (delete-test-file! test-file-name)
+      (is (= "All files formatted correctly.\n" (with-out-str (check-dir! ".")))))))

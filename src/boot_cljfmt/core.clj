@@ -24,13 +24,13 @@
        (mapv str)))
 
 (s/defrecord Checkerror
-  [errored? :- s/Bool
-   file     :- File
-   report   :- s/Str])
+             [errored? :- s/Bool
+              file     :- File
+              report   :- s/Str])
 
 (s/defrecord Checks
-  [checks   :- [Checkerror]
-   errored-checks :- [Checkerror]])
+             [checks   :- [Checkerror]
+              errored-checks :- [Checkerror]])
 
 (s/defn check-file :- Checkerror
   [file :- File]
@@ -56,21 +56,18 @@
                  (doseq [err errored-checks]
                    (println (:report err)))
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
-                 (System/exit 1)))))
+                 #_(System/exit 1)))))
 
 (s/defn fix-dir! :- nil
   [dir :- s/Str]
   (let [{:keys [checks errored-checks]} (check-dir dir)]
-    (doseq [file (map :file errored-checks)]
-      (try
-        (let [original (slurp file)
-              revised (cljfmt/reformat-string original)]
-          (when-not (= original revised)
-            (println (str "Reformatting " file))
-            (spit file revised)))
-        (catch Exception e
-          (println (str "Failed to format file: " file))
-          (println (.getMessage e)))))))
+    (doseq [file (map :file errored-checks)
+            :let [original (slurp file)
+                  revised (cljfmt/reformat-string original)]
+            :when (not= original revised)]
+      (do
+        (println (str "Reformatting " file))
+        (spit file revised)))))
 
 (bc/deftask check
   "Run a check for files, folders or the whole project, print the results."

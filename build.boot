@@ -1,6 +1,6 @@
 (def project 'boot-cljfmt)
 
-(set-env! :resource-paths #{"resources" "src"}
+(set-env! :resource-paths #{"src"}
           :source-paths   #{"test"}
           :dependencies   '[[org.clojure/clojure "1.10.0"]
                             [cljfmt "0.6.4"]
