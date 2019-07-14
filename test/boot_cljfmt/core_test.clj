@@ -55,14 +55,15 @@
       (is (= "" (:report res))))))
 
 (deftest project-level-checking
-  (testing "Whether it prints a correct report if a non-existing filename is given"
-    (is (= "File or directory does not exist or does not contain Clojure files.\n"
-           (with-out-str (check-dir! "Bama lama")))))
-  (testing "That the function reports errors when an invalid file is added"
-    (is (true? (string/includes?
-                (with-out-str (check-dir! "."))
-                "1 file(s) formatted incorrectly"))))
-  (testing "That the errors go away when the erroring file is deleted"
-    (do
-      (delete-test-file! test-file-name)
-      (is (= "All files formatted correctly.\n" (with-out-str (check-dir! ".")))))))
+  (with-redefs [exit-now! (constantly nil)]
+    (testing "Whether it prints a correct report if a non-existing filename is given"
+      (is (= "File or directory does not exist or does not contain Clojure files.\n"
+             (with-out-str (check-dir! "Bama lama")))))
+    (testing "That the function reports errors when an invalid file is added"
+      (is (true? (string/includes?
+                  (with-out-str (check-dir! "."))
+                  "1 file(s) formatted incorrectly"))))
+    (testing "That the errors go away when the erroring file is deleted"
+      (do
+        (delete-test-file! test-file-name)
+        (is (= "All files formatted correctly.\n" (with-out-str (check-dir! "."))))))))

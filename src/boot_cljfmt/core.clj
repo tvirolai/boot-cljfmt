@@ -23,14 +23,12 @@
        (filter clj-file?)
        (mapv str)))
 
-(s/defrecord Checkerror
-             [errored? :- s/Bool
-              file     :- File
-              report   :- s/Str])
+(s/defrecord Checkerror [errored? :- s/Bool
+                         file     :- File
+                         report   :- s/Str])
 
-(s/defrecord Checks
-             [checks   :- [Checkerror]
-              errored-checks :- [Checkerror]])
+(s/defrecord Checks [checks   :- [Checkerror]
+                     errored-checks :- [Checkerror]])
 
 (s/defn check-file :- Checkerror
   [file :- File]
@@ -46,6 +44,11 @@
   (let [checks (->> dir get-project-filenames (map check-file))]
     (->Checks checks (filter :errored? checks))))
 
+(defn exit-now!
+  "We wrap the Java call to a Clojure function in order to be able to mock it."
+  [code]
+  (System/exit code))
+
 (s/defn check-dir! :- nil
   [dir :- s/Str]
   (let [{:keys [checks errored-checks]} (check-dir dir)]
@@ -56,7 +59,7 @@
                  (doseq [err errored-checks]
                    (println (:report err)))
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
-                 (System/exit 1)))))
+                 (exit-now! 1)))))
 
 (s/defn fix-dir! :- nil
   [dir :- s/Str]
