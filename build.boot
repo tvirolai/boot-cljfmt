@@ -17,7 +17,7 @@
          '[metosin.bat-test :refer (bat-test)]
          '[adzerk.bootlaces :refer :all]) ; Redefine a variation of this task here
 
-(def version "0.1.2")
+(def version "0.1.3")
 (bootlaces! version)
 
 (task-options!
