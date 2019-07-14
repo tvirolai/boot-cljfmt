@@ -18,7 +18,7 @@ If you use Boot as your build tool, you can add boot-cljfmt as a dependency to y
 the following to your `build.boot`:
 
 ```clojure
-(set-env! :dependencies [boot-cljfmt "0.1.2" :scope "test"])
+(set-env! :dependencies [boot-cljfmt "0.1.3" :scope "test"])
 ```
 
 Then you can import the tasks you need:
