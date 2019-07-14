@@ -56,7 +56,7 @@
                  (doseq [err errored-checks]
                    (println (:report err)))
                  (println (str (count errored-checks) " file(s) formatted incorrectly"))
-                 #_(System/exit 1)))))
+                 (System/exit 1)))))
 
 (s/defn fix-dir! :- nil
   [dir :- s/Str]
