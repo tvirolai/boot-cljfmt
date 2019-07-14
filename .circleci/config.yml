@@ -51,4 +51,3 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-              # only: /.*/ # Debug
