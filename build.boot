@@ -2,7 +2,7 @@
 
 (set-env! :resource-paths #{"src"}
           :source-paths   #{"test"}
-          :dependencies   '[[org.clojure/clojure "1.10.0"]
+          :dependencies   '[[org.clojure/clojure "RELEASE"]
                             [cljfmt "0.6.4"]
                             [prismatic/schema "1.1.11"]
                             [boot/core "RELEASE" :scope "test"]
